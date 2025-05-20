@@ -13,6 +13,6 @@ export default defineConfig({
     host: '0.0.0.0',  // or use your local IP (e.g., '192.168.x.x')
     port: 3001,       // Or whatever port your Vite server uses
   },
-  base: '/University/',  
+  base: '/UniProject/',  
 
 })
