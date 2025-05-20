@@ -1,1 +1,0 @@
-import{j as r}from"./index-DemlhxOW.js";import t from"./Tabs-h0koMoPF.js";import"./index-DYo7GJFf.js";import"./input-Dqx2CGkH.js";const i=()=>r.jsx(r.Fragment,{children:r.jsx("div",{children:r.jsx(t,{})})});export{i as default};

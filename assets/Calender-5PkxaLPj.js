@@ -1,0 +1,1 @@
+import{j as e}from"./index-Ccekwy5F.js";import{C as r}from"./Calender-lJ9VXN_F.js";import"./index-CUXcaQ8R.js";function a(){return e.jsx(e.Fragment,{children:e.jsx("div",{className:"flex items-center justify-center  bg-gray-50 ",children:e.jsx("div",{className:"w-[70%] my-10",children:e.jsx(r,{})})})})}export{a as default};
