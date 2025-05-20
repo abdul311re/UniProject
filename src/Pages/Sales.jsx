@@ -1,6 +1,6 @@
 function Sales(){
     return(<>
-    <p>Sales</p>
+    <p className="flex  md:hidden">Sales</p>
     </>)
     }
     export default Sales;
