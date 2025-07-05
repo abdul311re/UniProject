@@ -1,8 +1,15 @@
 import Arlogow from "../../public/wmremove-transformed.svg";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMagnifyingGlass, faBell, faCalendarWeek, faMessage } from '@fortawesome/free-solid-svg-icons';
-
+import { useLocation } from "react-router-dom";
+import { menuItems } from "./Side"; // adjust path
 function Header() {
+    const location = useLocation();
+    const currentPath = location.pathname;
+  
+    // Find the active menu item
+    const activeItem = menuItems.find((item) => item.path === currentPath)?.name || "Dashboard";
+  
     return (
         <header className="flex justify-between items-center px-4 sm:px-6 lg:px-10 py-2  bg-[#191b1f] sticky top-0 z-30">
             {/* Left Section */}
@@ -12,7 +19,7 @@ function Header() {
                 </div>
                 <div className="h-6 sm:h-8 mx-2 w-[1px] sm:w-[2px] bg-[#A7A7A7]"></div>
                 <div>
-                    <p className="font-bold text-white text-lg sm:text-xl px-2">Home</p>
+                    <p className="font-bold text-white text-lg sm:text-xl px-2">{activeItem}</p>
                 </div>
             </div>
 

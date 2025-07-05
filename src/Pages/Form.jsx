@@ -1,14 +1,16 @@
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-
+import { POST } from "../apicontroll/apicontroll"; // make sure path is correct
 const Form = () => {
   const [picture, setPicture] = useState(null);
   const [selectedOption, setSelectedOption] = useState('');
-
+  const [profileImage, setProfileImage] = useState(null); // 🟠 added
   const handleFile = (event) => {
     setPicture(event.target.files[0]);
   };
-
+  const handleImageFile = (event) => { // 🟠 added
+    setProfileImage(event.target.files[0]);
+  };
   const handleChange = (e) => {
     setSelectedOption(e.target.value);
   };
@@ -34,22 +36,23 @@ const Form = () => {
     formData.append("date", document.getElementById("date").value);
     formData.append("address", document.getElementById("text-area").value);
     formData.append("employmentType", selectedOption);
+    formData.append("macaddress", document.getElementById("macaddress").value);
+    formData.append("username", document.getElementById("username").value);
+    formData.append("password", document.getElementById("password").value);
 
     if (picture) {
       formData.append("resume", picture);
     }
-
+    if (profileImage) { // 🟠 added
+      formData.append("image", profileImage);
+    }
     try {
-      const response = await fetch("http://localhost:5000/api/employees", {
-        method: "POST",
-        body: formData,
-      });
-
-      const result = await response.json();
+      const result = await POST("employees", formData, true); // `true` = multipart/form-data
       console.log("Server Response:", result);
       alert("Submitted successfully!");
       form.reset();
       setPicture(null);
+      setProfileImage(null);
       setSelectedOption("");
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -76,6 +79,8 @@ const Form = () => {
             <InputField label="Work Shift" id="workShift" placeholder="Morning/Night" />
             <InputField label="Salary" id="salary" placeholder="50000 PKR" />
             <InputField label="Highest Degree" id="degree" placeholder="BSCS" />
+            <InputField label="Username" id="username" placeholder="username" />
+            <InputField label="Password" id="password" placeholder="Password" />
             <InputField label="Experience (Years)" id="experience" placeholder="2" />
 
             <div>
@@ -123,8 +128,20 @@ const Form = () => {
                 className="w-full text-sm border border-gray-300 px-3 py-2 rounded-md"
               />
             </div>
+            <InputField label="macaddress" id="macaddress" placeholder="2.2" />
           </div>
-
+             {/* 🟠 profile image upload */}
+             <div>
+              <label htmlFor="profileImage" className="block text-sm font-medium text-gray-700 mb-1">Profile Image</label>
+              <input
+                type="file"
+                id="profileImage"
+                name="image"
+                accept="image/*"
+                onChange={handleImageFile}
+                className="w-full text-sm border border-gray-300 px-3 py-2 rounded-md"
+              />
+            </div>
           <div className="mt-10">
             <button
               type="submit"

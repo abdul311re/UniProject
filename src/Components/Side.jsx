@@ -13,7 +13,7 @@ import {
   faBell,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 function Sidebar() {
   const [activeItem, setActiveItem] = useState("Employees");
@@ -54,7 +54,7 @@ function Sidebar() {
       {/* Sidebar */}
       <div
         className={`
-          fixed lg:top-18 top-29 left-0 h-full bg-[#fafafa] shadow-lg transition-all duration-300 z-40
+          fixed overflow-y-auto lg:top-18 top-29 left-0 max-h-screen bg-[#fafafa] shadow-lg transition-all duration-300 z-40
           ${
             windowWidth >= 1024
               ? isOpen
@@ -64,7 +64,7 @@ function Sidebar() {
               ? "w-56 translate-x-0"
               : "-translate-x-full"
           }
-          overflow-hidden
+          
         `}
       >
         {/* Toggle Button inside sidebar for lg and above */}
@@ -83,7 +83,7 @@ function Sidebar() {
         {/* Sidebar Menu */}
         <div className="px-2 pt-0">
           {menuItems.map((item, index) => (
-            <NavLink to={item.path || "#"} key={index}
+            <NavLink to={item.path || "#"}  key={index}
                 className={({ isActive }) =>`border-b border-gray-300 p-3 my-3 flex items-center gap-3 cursor-pointer transition-all rounded-xs
                   ${
                    isActive
@@ -124,13 +124,13 @@ function Sidebar() {
 }
 
 // Sidebar menu items
-const menuItems = [
+export const menuItems = [
   { name: "Dashboard", icon: faHouse, path: "/" },
   { name: "Employees", icon: faUser, path: "/Employees" },
   { name: "Sales", icon: faChartBar, path: "/Sales" },
-  { name: "Attendance & Leaves", icon: faUserCheck,path: "/Sales" },
+  { name: "Attendance & Leaves", icon: faUserCheck,path: "/Employeelist" },
   { name: "Payroll & Salary", icon: faMoneyCheckAlt,path: "/Sales" },
-  { name: "Performance & Appraisals", icon: faStar ,path: "/Sales"},
+  { name: "Leads", icon: faStar ,path: "/Leads"},
   { name: "HR Policies & Documents", icon: faFileAlt,path: "/Sales" },
   { name: "Projects", icon: faUserPlus , path: "/Projects" },
   { name: "Calender", icon: faBell , path: "/Calender" },

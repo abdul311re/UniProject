@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import AccountTab  from "./AccountTab";
-import PasswordTab  from "./Pasword";
+import AccountTab  from "./AccountTab/AccountTab";
+import PasswordTab  from "./Pasword/Pasword";
 import { useSearchParams } from "react-router-dom";
 
  const TabsDemo = ({}) => {
@@ -21,7 +21,7 @@ import { useSearchParams } from "react-router-dom";
     setLeads(newLeads);
   };
   return (
-    <div className="flex justify-center items-center px-10 py-2  bg-gray-50">
+    <div className="flex justify-center items-center px-10 py-8  bg-gray-50">
       <Tabs 
        defaultValue={activeTab}
         className="w-full "
@@ -141,17 +141,17 @@ import { useSearchParams } from "react-router-dom";
           </TabsTrigger>
         </TabsList>
         
-        <TabsContent value="account" className="mt-10">
+        <TabsContent value="account" className="mt-2">
           <AccountTab />
         </TabsContent>
         
-        <TabsContent value="password"  className="mt-10">
+        <TabsContent value="password"  className="mt-2">
           <PasswordTab />
         </TabsContent>
-        <TabsContent value="password"  className="mt-10">
+        <TabsContent value="password"  className="mt-2">
           <PasswordTab />
         </TabsContent>
-        <TabsContent value="password"  className="mt-10">
+        <TabsContent value="password"  className="mt-2">
           <PasswordTab />
         </TabsContent>
       </Tabs>
