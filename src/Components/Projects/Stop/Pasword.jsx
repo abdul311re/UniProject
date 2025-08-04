@@ -11,7 +11,7 @@ export default function AccountTab() {
 
   const fetchProjects = async () => {
     try {
-      const res = await GET("projects/pending");
+      const res = await GET("projects/stopped");
       const projectList = Array.isArray(res) ? res : res?.projects ?? [];
       setProjects(projectList);
 
@@ -19,7 +19,7 @@ export default function AccountTab() {
       const teamMap = {};
       await Promise.all(
         projectList.map(async (project) => {
-          const res = await GET(`projects/pending/${project.id}/team`);
+          const res = await GET(`projects/stop/${project.id}/team`);
           const team = Array.isArray(res) ?res :res?.team ?? [];
           console.log(team)
         })

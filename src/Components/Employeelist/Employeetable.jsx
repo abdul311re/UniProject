@@ -16,10 +16,11 @@ export default function EmployeeTable({ employees, getLatestAttendance, handleDe
             <th className="px-4 py-1">Joining</th>
             <th className="px-3 py-1">Role</th>
             <th className="px-3 py-1">Sex</th>
+            <th className="px-3 py-1">Nationality</th>
             <th className="px-3 py-1">Details</th>
-            <th className="px-3 py-1">Last Login</th>
+            {/* <th className="px-3 py-1">Last Login</th>
             <th className="px-3 py-1">Active</th>
-            <th className="px-3 py-1">Status</th>
+            <th className="px-3 py-1">Status</th> */}
           </tr>
         </thead>
         <tbody>
@@ -50,6 +51,7 @@ export default function EmployeeTable({ employees, getLatestAttendance, handleDe
                   <td className="px-1 py-3">{emp.date?.split("T")[0] || "-"}</td>
                   <td className="p-3 text-center">{emp.jobTitle || "-"}</td>
                   <td className="p-3 text-center">{emp.gender || "-"}</td>
+                  <td className="p-3 text-center">{emp.nationality || "-"}</td>
                   <td className="p-3">
                     <button
                       onClick={() => setOpenIndex(isOpen ? null : index)}
@@ -62,7 +64,7 @@ export default function EmployeeTable({ employees, getLatestAttendance, handleDe
                       handleDelete={handleDelete}/>
                     )}
                   </td>
-                  <td className="p-3">{emp.lastLogin || "-"}</td>
+                  {/* <td className="p-3">{emp.lastLogin || "-"}</td>
                   <td className="p-3">
                     <span
                       className={`px-2 py-1 rounded-full text-xs font-semibold ${
@@ -84,7 +86,7 @@ export default function EmployeeTable({ employees, getLatestAttendance, handleDe
                     >
                       {emp.status}
                     </span>
-                  </td>
+                  </td> */}
                 </tr>
               );
             })

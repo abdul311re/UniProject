@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GET, REMOVE } from "../../apicontroll/apicontrollp";
 import Filters from './Filters'
 import LeadsTable from "./leadstable";
@@ -50,7 +50,7 @@ import LeadsTable from "./leadstable";
         <div className="bg-white">
       <div className="border-b border-grey p-5">
         <button className="bg-black text-white py-[6px] px-3 rounded tracking-widest uppercase text-sm">
-          New Lead
+          <Link to="/Projects">New Lead</Link>
         </button>
       </div>
       <Filters

@@ -33,7 +33,7 @@ export default function LeadsTable({ leads, handleDelete,handleNavigate }) {
                     <td className="py-3 px-2">{leads.city}</td>
                     <td className="py-3 px-2">{leads.budget || "-"}</td>
                     <td className="py-3 px-2">{leads.created_at || "-"}</td>
-                    <td className="py-3 px-2"><button onClick={() => handleNavigate(leads)}>Use This Lead</button></td>
+                    <td className="py-3 px-2"><button className="bg-black p-2 text-xs text-white rounded" onClick={() => handleNavigate(leads)}>Use This Lead</button></td>
                   </tr>
                 );
               })

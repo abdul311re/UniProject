@@ -19,8 +19,8 @@ export default function Filters({
         >
           <option value="">Filter by Role</option>
           <option value="Frontend Developer">Frontend Developer</option>
-          <option value="partTime">Backend Developer</option>
-          <option value="contract">Contract</option>
+          <option value="Backend Developer">Backend Developer</option>
+          <option value="Graphic Designer">Graphic Designer</option>
           <option value="intern">Intern</option>
         </select>
         <div className="pointer-events-none absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-500">

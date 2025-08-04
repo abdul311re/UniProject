@@ -13,129 +13,150 @@ import {
   faBell,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import styled from "styled-components";
+
+// Styled Sidebar Container
+const StyledSidebar = styled.div`
+  position: fixed;
+  top: 64px; /* height of header */
+  left: 0;
+  height: calc(100vh - 64px);
+  background-color: #fafafa;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  z-index: 40;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+  width: auto;
+  /* Scrollbar styling */
+  &::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: red;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  scrollbar-width: thin;
+  scrollbar-color: white transparent;
+`;
+
+// Sidebar toggle button container
+const ToggleButton = styled.button`
+ padding-left: 4px;
+  color: #4b5563;
+  width: 100%;
+  display: flex;
+  justify-content: ${(props) => (props.isOpen ? "flex-end" : "center")};
+  padding-right: ${(props) => (props.isOpen ? "1rem" : "0")};
+  padding-top: ${(props) => (props.isOpen ? "0" : "0.5rem")};
+`;
 
 function Sidebar() {
-  const [activeItem, setActiveItem] = useState("Employees");
   const [isOpen, setIsOpen] = useState(true);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  // Track window resize to set sidebar state based on screen size
   useEffect(() => {
-    function handleResize() {
-      const newWidth = window.innerWidth;
-      setWindowWidth(newWidth);
-      if (newWidth >= 1024) {
-        setIsOpen(true); // lg and above: sidebar open
-      } else {
-        setIsOpen(false); // md and below: sidebar closed/hidden
-      }
-    }
-    
+    const handleResize = () => {
+      const width = window.innerWidth;
+      setWindowWidth(width);
+      setIsOpen(width >= 1024);
+    };
+
     window.addEventListener("resize", handleResize);
-    handleResize(); // Initialize on mount
-    
+    handleResize();
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const sidebarWidth =
+    windowWidth >= 1024
+      ? isOpen
+        ? "w-56"
+        : "w-16"
+      : isOpen
+      ? "w-56"
+      : "-translate-x-full";
+
   return (
     <>
-      {/* Header toggle button for md and sm */}
+      {/* Mobile Toggle Button */}
       {windowWidth < 1024 && (
         <button
-          className="fixed top-1 left-1 z-50 p-3  rounded-lg text-white lg:hidden"
+          className="fixed top-20 left-2 z-50 p-2 rounded-lg text-white bg-gray-800 lg:hidden"
           onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle sidebar"
         >
-          <FontAwesomeIcon icon={isOpen ? faTimes : faBars} size="md" />
+          <FontAwesomeIcon icon={isOpen ? faTimes : faBars} />
         </button>
       )}
 
       {/* Sidebar */}
-      <div
-        className={`
-          fixed overflow-y-auto lg:top-18 top-29 left-0 max-h-screen bg-[#fafafa] shadow-lg transition-all duration-300 z-40
-          ${
-            windowWidth >= 1024
-              ? isOpen
-                ? "w-56"
-                : "w-16"
-              : isOpen
-              ? "w-56 translate-x-0"
-              : "-translate-x-full"
-          }
-          
-        `}
-      >
-        {/* Toggle Button inside sidebar for lg and above */}
+      <StyledSidebar className={`transition-all duration-300 ${sidebarWidth}`}>
+        {/* Desktop Toggle */}
         {windowWidth >= 1024 && (
-          <button
-            className={`p-3 text-gray-700 w-full flex ${
-              isOpen ? "justify-end pr-4 " : "justify-center pt-2"
-            }`}
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle sidebar"
-          >
-            <FontAwesomeIcon icon={isOpen ? faTimes : faBars} className="cursor-pointer" />
-          </button>
+          <ToggleButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} >
+            <FontAwesomeIcon icon={isOpen ? faTimes : faBars} className="cursor-pointer pt-5" />
+          </ToggleButton>
         )}
 
-        {/* Sidebar Menu */}
-        <div className="px-2 pt-0">
+        {/* Menu */}
+        <div className="px-2 pt-2 pb-4">
           {menuItems.map((item, index) => (
-            <NavLink to={item.path || "#"}  key={index}
-                className={({ isActive }) =>`border-b border-gray-300 p-3 my-3 flex items-center gap-3 cursor-pointer transition-all rounded-xs
-                  ${
+            <NavLink
+              to={item.path || "#"}
+              key={index}
+              className={({ isActive }) =>
+                `border-b border-gray-300 p-3 my-3 flex items-center gap-3 cursor-pointer transition-all rounded
+                 ${
                    isActive
-                      ? "bg-gradient-to-r from-[#F54B64] to-[#F78361] text-white"
-                      : "text-gray-700 hover:bg-gray-200"
-                  }`}
-                onClick={() => setActiveItem(item.name)}
-              >
-                <div className="w-6 flex justify-center">
-                  <FontAwesomeIcon icon={item.icon} fontSize={"16px"} />
-                </div>
-                <span
-                  className={`${
-                    isOpen ? "block" : "hidden"
-                  } transition-all duration-300 text-xs whitespace-nowrap`}
-                >
-                  {item.name}
-                </span>
+                     ? "bg-gradient-to-r from-[#F54B64] to-[#F78361] text-white"
+                     : "text-gray-700 hover:bg-gray-200"
+                 }`
+              }
+            >
+              <div className="w-6 flex justify-center">
+                <FontAwesomeIcon icon={item.icon} fontSize="16px" className="" />
+              </div>
+              <span className={`${isOpen ? "block" : "hidden"} text-xs whitespace-nowrap`}>
+                {item.name}
+              </span>
             </NavLink>
           ))}
         </div>
-      </div>
+      </StyledSidebar>
 
-      {/* Main content area - add padding based on sidebar state */}
+      {/* Main content padding */}
       <div
         className={`transition-all duration-300 ${
-          windowWidth >= 1024
-            ? isOpen
-              ? "pl-56" // sidebar open
-              : "pl-16" // sidebar closed
-            : "" // no padding on mobile when sidebar is hidden
+          windowWidth >= 1024 ? (isOpen ? "pl-56" : "pl-16") : ""
         }`}
       >
-        {/* Your page content will go here */}
+        {/* Page content goes here */}
       </div>
     </>
   );
 }
 
-// Sidebar menu items
 export const menuItems = [
   { name: "Dashboard", icon: faHouse, path: "/" },
   { name: "Employees", icon: faUser, path: "/Employees" },
   { name: "Sales", icon: faChartBar, path: "/Sales" },
-  { name: "Attendance & Leaves", icon: faUserCheck,path: "/Employeelist" },
-  { name: "Payroll & Salary", icon: faMoneyCheckAlt,path: "/Sales" },
-  { name: "Leads", icon: faStar ,path: "/Leads"},
-  { name: "HR Policies & Documents", icon: faFileAlt,path: "/Sales" },
-  { name: "Projects", icon: faUserPlus , path: "/Projects" },
-  { name: "Calender", icon: faBell , path: "/Calender" },
+  { name: "Todo List", icon: faUserCheck, path: "/Todo" },
+  { name: "Payroll & Salary", icon: faMoneyCheckAlt, path: "/Payroll" },
+  { name: "Leads", icon: faStar, path: "/Leads" },
+  { name: "HR Policies & Documents", icon: faFileAlt, path: "/Policies" },
+  { name: "Projects", icon: faUserPlus, path: "/Projects" },
+  { name: "Calender", icon: faBell, path: "/Calender" },
   { name: "Employee Entry Form", icon: faBell, path: "/Form" },
+  { name: "Recruitment & Hiring", icon: faUserPlus, path: "/Hiring" },
 ];
 
 export default Sidebar;
-// Recruitment & Hiring

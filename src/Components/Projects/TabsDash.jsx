@@ -1,12 +1,12 @@
 import React from "react";
-import { useSearchParams } from "react-router-dom";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import useLeads from "./Apitabs";
-import TabPanels from "./Tabscontent"; // make sure the path is correct
 
-const TabsDemo = () => {
-  const { totalLeads, totalProjects,completedProjects, stopProjects, pendingProjects  } = useLeads();
+export default function TabsHeader() {
+  const { totalLeads, totalProjects, completedProjects, stopProjects , pendingProjects } = useLeads();
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const activeTab = searchParams.get("tab") || "converted";
 
   const leads = [
@@ -40,21 +40,35 @@ const TabsDemo = () => {
     },
   ];
 
+  const handleTabClick = (tab) => {
+    navigate(`/Projects?tab=${tab}`);
+  };
+
   return (
-    <div className="flex flex-col justify-center items-center px-10 py-8 bg-gray-50 relative">
+
       <Tabs defaultValue={activeTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4 !h-20">
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-2 bg-gray-50 rounded-none px-10  h-26 ">
           {leads.map((lead) => (
-            <TabsTrigger key={lead.id} value={lead.tab}>
-              <div className="flex-1 bg-white px-4 pt-3 rounded-sm shadow-sm border border-gray-200">
+            <TabsTrigger
+              key={lead.id}
+              value={lead.tab}
+              onClick={() => handleTabClick(lead.tab)}
+              className="p-0 rounded-none w-full h-0"
+            >
+              <div className="w-full bg-white p-4 rounded-md shadow-sm border hover:shadow-md transition">
                 <div className="flex items-center justify-between mb-2">
-                  <div className="text-xs font-normal text-gray-700">{lead.label}</div>
-                  <div className="text-sm">
-                    <span className="text-blue-600">{lead.value}</span>
-                    <span className="text-gray-400">/{lead.total}</span>
-                  </div>
+                  <p className="text-xs font-medium text-gray-600">
+                    {lead.label}
+                  </p>
+                  <p className="text-sm font-semibold text-blue-600">
+                    {lead.value}
+                    <span className="text-gray-400 font-normal">
+                      /{lead.total}
+                    </span>
+                  </p>
                 </div>
-                <div className="relative h-1 w-full bg-gray-200 rounded-full mb-4 mt-2 overflow-hidden">
+
+                <div className="relative h-2 w-full h-[4px] bg-gray-200 rounded-full overflow-hidden">
                   <div
                     className="absolute top-0 left-0 h-full bg-orange-500 rounded-full transition-all duration-300"
                     style={{
@@ -66,12 +80,6 @@ const TabsDemo = () => {
             </TabsTrigger>
           ))}
         </TabsList>
-
-        {/* ✅ Render the TabsContent here */}
-        <TabPanels leads={leads} />
       </Tabs>
-    </div>
   );
-};
-
-export default TabsDemo;
+}

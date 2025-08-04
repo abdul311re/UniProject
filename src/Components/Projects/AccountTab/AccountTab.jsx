@@ -1,22 +1,27 @@
 import { useEffect, useState } from "react";
 import {
   Card,
-  CardContent,
-  CardDescription,
   CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { GET } from "../../../apicontroll/apicontroll";
+import { GET, POST } from "../../../apicontroll/apicontroll";
 import Project from "./Projdetail";
 import Employee from "./Empproject";
+
 export default function AccountTab() {
   const [employees, setEmployees] = useState([]);
-  const [projectType, setProjectType] = useState("");
   const [selectedEmployees, setSelectedEmployees] = useState({});
+  const [project, setProject] = useState({
+    projectName: "",
+    clientName: "",
+    clientEmail: "",
+    clientPhone: "",
+    city: "",
+    budget: "",
+    startDate: "",
+    dueDate: "",
+    details: "",
+    projectType: "",
+  });
 
   useEffect(() => {
     const loadEmployees = async () => {
@@ -27,38 +32,68 @@ export default function AccountTab() {
         console.error("Failed to load employees", err);
       }
     };
-
     loadEmployees();
   }, []);
 
-  const handleEmployeeSelect = (empId) => {
-    setSelectedEmployees((prevSelected) =>
-      prevSelected.includes(empId)
-        ? prevSelected.filter((id) => id !== empId)
-        : [...prevSelected, empId]
-    );
-  };
-
-  const handleSave = () => {
+  const handleSave = async (e) => {
+    e.preventDefault();
+    console.log("Project data going to backend:", project);
     console.log("Selected Employees:", selectedEmployees);
-    // Optional: submit with project form data
+
+    try {
+      const response = await POST("projects", {
+        ...project,
+        employees: Object.entries(selectedEmployees).map(([role, employeeId]) => ({
+          role,
+          employeeId,
+        })),
+      });
+      
+      console.log("Project saved:", response);
+      alert("Project saved successfully!");
+      
+      setProject({
+        projectName: "",
+        clientName: "",
+        clientEmail: "",
+        clientPhone: "",
+        city: "",
+        budget: "",
+        startDate: "",
+        dueDate: "",
+        description: "",
+        projectType: "",
+      });
+      setSelectedEmployees({});
+    } catch (err) {
+      console.error("Failed to save project", err);
+      alert("Failed to save project");
+    }
   };
 
   return (
     <Card>
-      {/* Project Form - unchanged */}
-    
-      <Project/>
-
-      {/* Employee Section */}
-     <Employee
-      employees={employees}
-      projectType={projectType}
-      setProjectType={setProjectType}
-      selectedEmployees={selectedEmployees}
-      setSelectedEmployees={setSelectedEmployees} />
+      <Project
+        project={project}
+        setProject={setProject}
+      />
+      <Employee
+        employees={employees}
+        projectType={project.projectType}
+        setProjectType={(type) =>
+          setProject((prev) => ({ ...prev, projectType: type }))
+        }
+        selectedEmployees={selectedEmployees}
+        setSelectedEmployees={setSelectedEmployees}
+      />
       <CardFooter>
-        <Button onClick={handleSave}>Save changes</Button>
+        <button
+        type="button"
+        onClick={(e) => handleSave(e)}
+          className="bg-black text-white px-4 py-2 rounded"
+        >
+          Save changes
+        </button>
       </CardFooter>
     </Card>
   );

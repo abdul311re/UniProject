@@ -10,7 +10,7 @@ const Projects = lazy(() => import('../Pages/Projects.jsx'));
 const Calender = lazy(() => import('../Pages/Calender.jsx'));
 const Account = lazy(() => import('../Components/Projects/Tabs.jsx'));
 const Leads = lazy(() => import('../Pages/Leads.jsx'));
-
+const Todo1 = lazy(() => import('../Pages/Todo.jsx'));
 const WebRoutes = () => {
 
   return (
@@ -37,6 +37,7 @@ const WebRoutes = () => {
         <Route exact path="/Projects" element={<Projects/>} />
         <Route exact path="/Account" element={<Account/>} />
         <Route exact path="/Leads" element={<Leads/>} />
+        <Route exact path="/Todo" element={<Todo1/>} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Suspense>
